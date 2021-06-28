@@ -1,2 +1,2 @@
 # ToolPackage
- Useful tools collection.
+ Useful tools collections.
