@@ -18,10 +18,18 @@ def plot2DFormular(func, fRange=[0, 120], precision=0.1, showSave=False):
         fig.savefig("{}.png".format(func.__name__))
     plt.show()
 
+
 def plotMultiCurve(data, style=None, showSave=False):
     x = np.arange(0, data.shape[1], 1)
     fig, ax = plt.subplots()
 
+    for each in data:
+        ax.plot(x, each)
+
+    ax.set(xlabel='x', 
+            ylabel="MultiCurve",
+            title='Plot of MultiCurve')
+    ax.grid()
     if showSave:
         fig.savefig("plotMultiCurve.png")
     plt.show()
