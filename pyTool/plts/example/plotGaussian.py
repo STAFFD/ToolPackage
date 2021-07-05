@@ -1,4 +1,4 @@
-from plts.basic.plot2D import plot2DFormular
+from plts.func.plot2D import plot2DFormular
 import numpy as np
 
 def gaussian(x, sig=0.5, mu=0.5):
