@@ -1,9 +1,35 @@
-import cv2
+from pyUtils.decorator import parametrized
 import numpy as np
+import cv2
 
 IMG_QR = "pyTool/cvision/media/QR.jpg"
 
+@parametrized
+def cv_autoShow(func, 
+                name=None, 
+                button=27, 
+                holdTime=1):
+    """
+        This function should be use as a decorator.
+        argument func should return a numpy array image
+    """
+    if type(button) == str:
+        button = ord(button)
+    def wait():
+        while True:
+            cv2.imshow(name if name is not None else func.__name__, func())
+            key = cv2.waitKey(holdTime)
+            if key == button:
+                break
+    return wait
+
+
 def cv_quitHold(button=27):
+    """
+        Hold the image which is shown with cv2.imshow()
+        Exit with specific button. 
+        Button can be pass in using ascii code or char
+    """
     if type(button) == str:
         button = ord(button)
     while True:
@@ -11,11 +37,19 @@ def cv_quitHold(button=27):
         if key == button:
             break
 
-def cv_scale(image, scaler):
+
+def cv_scale(image, 
+            scaler):
+    """
+        Scale the image with a factor scaler.
+    """
     imHeight, imWidth, channels = image.shape
     return cv2.resize(image, (int(imWidth*scaler), int(imHeight*scaler)))
 
-def cv_do(img, function=None, show=True):
+
+def cv_do(img, 
+        function=None, 
+        show=True):
     """
         img: the input image. 
             Can be the path to the image (str) or image data (np.ndarray)
