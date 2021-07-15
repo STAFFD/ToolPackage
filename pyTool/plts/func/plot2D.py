@@ -19,17 +19,74 @@ def plot2DFormular(func, fRange=[0, 120], precision=0.1, showSave=False):
     plt.show()
 
 
-def plotMultiCurve(data, style=None, showSave=False):
-    x = np.arange(0, data.shape[1], 1)
+def simplePlot(y, 
+                x=None,
+                style=None, 
+                save=False,
+                x_label="x",
+                y_label="y",
+                title=None,
+                name="simplePlot.png",
+                fitPlot=None):
     fig, ax = plt.subplots()
+    if x is None:
+        x = np.arange(0, y.shape[1], 1)
+    for each in y:
+        if type(each)==list:
+            ax.plot(x, each)
+        else:  
+            if type(fitPlot)==FitPlot:
+                fitPlot.setup(x, y, ax)
+                ax.scatter(x, y)
+                fitPlot.plot()
+            else:
+                ax.plot(x, y)
+            break
 
-    for each in data:
-        ax.plot(x, each)
-
-    ax.set(xlabel='x', 
-            ylabel="MultiCurve",
-            title='Plot of MultiCurve')
+    ax.set(xlabel=x_label, 
+            ylabel=y_label,
+            title="Plot of {} vs {}".format(x_label, y_label) if title is None else title)
     ax.grid()
-    if showSave:
-        fig.savefig("plotMultiCurve.png")
+    if save:
+        fig.savefig("{}.png".format(name))
     plt.show()
+
+
+class FitPlot:
+
+    def __init__(self, 
+                fitMethod, 
+                equation=True, 
+                forceZero=False, 
+                position=[1, -2]) -> None:
+        self.x = None
+        self.y = None
+        self.ax = None
+        self.forceZero = forceZero
+        self.equation = equation
+        self.position = position
+        methods = {
+            "linear": self.linear
+        }
+        self.method = methods[fitMethod]
+    
+    def setup(self, x, y, ax):
+        self.x = np.array(x)
+        self.y = np.array(y)
+        self.ax = ax
+
+    def linear(self):
+        assert self.x is not None or self.y is not None 
+        a, b =  np.polyfit(self.x, self.y, 1)
+        y = a*self.x+b
+        self.ax.plot(self.x, y,  color='orange')
+        if self.equation:
+            equationText = "y={}x".format(round(a, 2))
+            if not self.forceZero:
+                equationText += "+{}".format(round(b, 2))
+            self.ax.text(self.x[self.position[0]], 
+                            self.y[self.position[1]], 
+                            equationText)
+
+    def plot(self):
+        self.method()

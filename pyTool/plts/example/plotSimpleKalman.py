@@ -23,4 +23,5 @@ for i in measureTemperature:
     est_list.append(est)
 
 data = np.array([realTemperature, measureTemperature, est_list])
+
 plotMultiCurve(data)

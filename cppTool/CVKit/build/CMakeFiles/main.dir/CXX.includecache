@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/utils.h
+iostream
+-
+list
+-
+functional
+-
+opencv2/opencv.hpp
+-
+
+/home/sheldonvon/project/ToolPackage/cppTool/CVKit/src/main.cpp
+utils.h
+/home/sheldonvon/project/ToolPackage/cppTool/CVKit/src/utils.h
+
+/home/sheldonvon/project/ToolPackage/cppTool/CVKit/src/utils.cpp
+utils.h
+/home/sheldonvon/project/ToolPackage/cppTool/CVKit/src/utils.h
+
