@@ -18,7 +18,7 @@ ownIP = gethostbyname(gethostname())
 if args.s and args.r:
 	print("Can not save and restore at the same time")
 if args.s or args.r:
-	with open('{}/data.CoreDes.json'.format(path), 
+	with open('{}/data.rosdes.json'.format(path), 
 				'w' if args.s else 'r' , 
 				encoding='utf-8') as f:
 		if args.s:
@@ -29,11 +29,11 @@ if args.s or args.r:
 			print("Core IP loaded -> {}".format(core["IP"]))
 ROS_MASTER_URI = "export ROS_MASTER_URI=http://{}:11311\n".format("localhost" if args.m else core["IP"])
 ROS_IP = 'export ROS_IP={}\n'.format(ownIP)
-with open("{}/CoreDes.sh".format(path), "w") as file:
+with open("{}/rosdes.sh".format(path), "w") as file:
 	file.write("#!/bin/sh\n")
 	file.write(ROS_MASTER_URI)
 	file.write("echo ROS Master URL is now set to $ROS_MASTER_URI\n")
 	file.write(ROS_IP)
 	file.write("echo ROS IP is now set to $ROS_IP\n")
-	file.write("rm {}/CoreDes.sh".format(path))
-print("Run the following commands:\n\n. CoreDes.sh")
+	file.write("rm {}/rosdes.sh".format(path))
+print("Run the following commands:\n\n. rosdes.sh")

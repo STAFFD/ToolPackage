@@ -1,7 +1,7 @@
 # Installation
 
 '''
-chmod +x CoreDes.py
+chmod +x rosdes.py
 '''
 
 ## Mac
