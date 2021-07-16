@@ -2,7 +2,8 @@
 import argparse
 import json
 import os
-from socket import gethostbyname, gethostname
+from socket import socket, AF_INET, SOCK_DGRAM
+
 parser = argparse.ArgumentParser(
 	formatter_class=argparse.ArgumentDefaultsHelpFormatter
 )
@@ -14,7 +15,11 @@ args = parser.parse_args()
 assert not (args.m and args.ip != "localhost")
 path = os.path.dirname(os.path.realpath(__file__))
 core = {"IP": args.ip}
-ownIP = gethostbyname(gethostname())
+
+s = socket(AF_INET, SOCK_DGRAM)
+s.connect(('8.8.8.8', 1))
+ownIP = s.getsockname()[0]
+s.close()
 if args.s and args.r:
 	print("Can not save and restore at the same time")
 if args.s or args.r:
