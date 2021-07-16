@@ -11,7 +11,7 @@ parser.add_argument('-m', action='store_true', default=False)
 parser.add_argument('-s', action='store_true', default=False)
 parser.add_argument('-r', action='store_true', default=False)
 args = parser.parse_args()
-assert args.m and args.ip != "localhost"
+assert not (args.m and args.ip != "localhost")
 path = os.path.dirname(os.path.realpath(__file__))
 core = {"IP": args.ip}
 ownIP = gethostbyname(gethostname())
