@@ -13,3 +13,8 @@ echo 'export PATH="$PATH:/path/to/ToolPackage/pyTool/pyUtils/ROSTool/"' >> ~/.ba
 '''
 echo 'export PATH="$PATH:/path/to/ToolPackage/pyTool/pyUtils/ROSTool/"' >> ~/.bashrc
 '''
+
+## zsh
+'''
+echo 'export PATH="$PATH:/path/to/ToolPackage/pyTool/pyUtils/ROSTool/"' >> ~/.zshrc
+'''
