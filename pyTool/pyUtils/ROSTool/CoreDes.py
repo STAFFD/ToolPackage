@@ -2,15 +2,18 @@
 import argparse
 import json
 import os
+from socket import gethostbyname, gethostname
 parser = argparse.ArgumentParser(
 	formatter_class=argparse.ArgumentDefaultsHelpFormatter
 )
 parser.add_argument('-ip', type=str, default="localhost")
+parser.add_argument('-m', action='store_true', default=False)
 parser.add_argument('-s', action='store_true', default=False)
 parser.add_argument('-r', action='store_true', default=False)
 args = parser.parse_args()
 path = os.path.dirname(os.path.realpath(__file__))
 core = {"IP": args.ip}
+ownIP = gethostbyname(gethostname())
 if args.s and args.r:
 	print("Can not save and restore at the same time")
 if args.s or args.r:
@@ -23,12 +26,14 @@ if args.s or args.r:
 		else:
 			core = json.load(f)
 			print("Core IP loaded -> {}".format(core["IP"]))
-ROS_MASTER_URI = "export ROS_MASTER_URI=http://{}:11311\n".format(core["IP"])
-ROS_IP = 'export ROS_IP={}\n'.format(core["IP"])
+
+ROS_MASTER_URI = "export ROS_MASTER_URI=http://{}:11311\n".format("localhost" if args.m else core["IP"])
+ROS_IP = 'export ROS_IP={}\n'.format(ownIP)
 with open("{}/CoreDes.sh".format(path), "w") as file:
 	file.write("#!/bin/sh\n")
-	file.write("echo ROS IP is now set to {}\n".format(core["IP"]))
 	file.write(ROS_MASTER_URI)
+	file.write("echo ROS Master URL is now set to $ROS_MASTER_URI\n")
 	file.write(ROS_IP)
+	file.write("echo ROS IP is now set to $ROS_IP\n")
 	file.write("rm {}/CoreDes.sh".format(path))
 print("Run the following commands:\n\n. CoreDes.sh")
