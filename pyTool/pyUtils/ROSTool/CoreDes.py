@@ -11,13 +11,14 @@ parser.add_argument('-m', action='store_true', default=False)
 parser.add_argument('-s', action='store_true', default=False)
 parser.add_argument('-r', action='store_true', default=False)
 args = parser.parse_args()
+assert args.m and args.ip != "localhost"
 path = os.path.dirname(os.path.realpath(__file__))
 core = {"IP": args.ip}
 ownIP = gethostbyname(gethostname())
 if args.s and args.r:
 	print("Can not save and restore at the same time")
 if args.s or args.r:
-	with open('{}/data.json'.format(path), 
+	with open('{}/data.CoreDes.json'.format(path), 
 				'w' if args.s else 'r' , 
 				encoding='utf-8') as f:
 		if args.s:
@@ -26,7 +27,6 @@ if args.s or args.r:
 		else:
 			core = json.load(f)
 			print("Core IP loaded -> {}".format(core["IP"]))
-
 ROS_MASTER_URI = "export ROS_MASTER_URI=http://{}:11311\n".format("localhost" if args.m else core["IP"])
 ROS_IP = 'export ROS_IP={}\n'.format(ownIP)
 with open("{}/CoreDes.sh".format(path), "w") as file:
